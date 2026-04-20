@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELESAM Orçamento</title>
+
+</head>
+<style>
+body {
+    margin: 5px;
+    font-family: Arial, sans-serif;
+    background: #000;
+    color: #fff;
+}
+
+/* TOPO */
+.header {
+    background: #111;
+    text-align: center;
+    padding: 0px;
+}
+
+.header img {
+    margin-top: 10px;
+    max-width: 184px;
+    width: 188px;
+    height: 135px;
+    border-radius: 52%;
+}
+
+
+.header h1 {
+    color: #0af;
+    font-size: 21px;
+}
+
+.header p {
+    font-size: 17px;
+    margin-top: -17px;
+    margin-left: -6px;
+    font-weight: bolder;
+}
+
+/* CONTAINER */
+.container {
+    padding: 0px;
+    max-width: 366px;
+    background: #111;
+    margin: auto;
+}
+
+/* CAMPOS */
+.info {
+    margin-top: 10px;
+}
+
+.info input {
+    width: 94%;
+    padding: 11px;
+    margin-top: 2px;
+    border: none;
+    border-radius: 3px;
+    background: #ccc;
+    color: #000;
+}
+
+/* TABELA */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 7px;
+}
+
+th {
+    background: #007BFF;
+    padding: 7px;
+    border-radius: 4px;
+}
+
+td {
+    padding: 5px;
+}
+
+input.valor, td input[type="text"] {
+    width: 100%;
+    padding: 6px;
+    border-radius: 5px;
+    border: none;
+    margin-left: -5px;
+    background: #222;
+    color: #fff;
+}
+
+/* BOTÕES */
+button {
+    width: 100%;
+    padding: 6px;
+    margin-top: 0px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 17px;
+}
+
+.btn-add { background: red; }
+.btn-whatsapp { background: #25D366; }
+
+/* TOTAL */
+.total {
+    text-align: right;
+    margin-top: 7px;
+    font-size: 19px;
+    color: #0af;
+}
+
+/* RODAPÉ */
+.footer {
+    text-align: center;
+    background: #111;
+    padding: 7px;
+    margin-top: 9px;
+    font-size: 12px;
+}
+
+.footer a {
+    color: #0af;
+    text-decoration: none;
+}
+</style>
+</head>
+
+
+<body>
+
+<div class="header">
+    <img src="img/logo-empresa.jpeg" alt="Logo">
+    <h1>Trabalhamos com Manutenção Geral</h1>
+    <p>• Pintura • Grafiato • Efeitos • Textura</p>
+</div>
+
+<div class="container">
+
+
+    
+
+<!-- CLIENTE E DATA -->
+<div class="info">
+    <label>Nome do Cliente</label>
+    <input type="text" id="cliente" placeholder="Digite o nome">
+
+    <label>Data</label>
+    <input type="date" id="data">
+</div>
+
+<!-- TABELA -->
+<table id="tabela">
+<thead>
+<tr>
+<th>Descrição</th>
+<th>Serviço</th>
+<th>Valor (R$)</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><input type="text"></td>
+<td><input type="text"></td>
+<td><input type="number" class="valor"></td>
+</tr>
+</tbody>
+</table>
+
+<button class="btn-add" onclick="add()">+ Adicionar Serviço</button>
+
+<div class="total">
+Total: R$ <span id="total">0.00</span>
+</div>
+
+<button class="btn-whatsapp" onclick="zap()">Enviar no WhatsApp</button>
+
+</div>
+
+<div class="footer">
+📍 Avenida Raimundo Pereira de Magalhães, 10.735 - Pirituba SP<br><br>
+📞 <a href="https://wa.me/5511917168989">(11) 91716-8989</a><br>
+📧 <a href="mailto:eleniziosantos@hotmail.com">eleniziosantos@hotmail.com</a>
+</div>
+
+<script> 
+function add(){
+    let tr = document.createElement("tr");
+
+    tr.innerHTML = `
+    <td><input type="text"></td>
+    <td><input type="text"></td>
+    <td><input type="number" class="valor"></td>
+    `;
+
+    document.querySelector("#tabela tbody").appendChild(tr);
+    eventos();
+}
+
+function eventos(){
+    document.querySelectorAll(".valor").forEach(i=>{
+        i.addEventListener("input", total);
+    });
+}
+
+function total(){
+    let soma = 0;
+
+    document.querySelectorAll(".valor").forEach(i=>{
+        soma += parseFloat(i.value) || 0;
+    });
+
+    document.getElementById("total").innerText = soma.toFixed(2);
+}
+
+function zap(){
+    let cliente = document.getElementById("cliente").value;
+    let data = document.getElementById("data").value;
+
+    let msg = "📄 *Orçamento ELESAM*%0A%0A";
+
+    if(cliente){
+        msg += `👤 Cliente: ${cliente}%0A`;
+    }
+
+    if(data){
+        msg += `📅 Data: ${data}%0A`;
+    }
+
+    msg += "%0A";
+
+    document.querySelectorAll("#tabela tbody tr").forEach(l=>{
+        let d=l.cells[0].querySelector("input").value;
+        let s=l.cells[1].querySelector("input").value;
+        let v=l.cells[2].querySelector("input").value;
+
+        if(d||s||v){
+            msg += `• ${d} - ${s}: R$ ${v}%0A`;
+        }
+    });
+
+    let total = document.getElementById("total").innerText;
+
+    msg += `%0A💰 Total: R$ ${total}`;
+    msg += `%0A📍 São Paulo - SP`;
+    msg += `%0A📧 eleniziosantos@hotmail.com`;
+
+    window.open(`https://wa.me/5511917168989?text=${msg}`);
+}
+
+eventos();
+
+</script>
+</body>
+</html>
