@@ -3,7 +3,6 @@ usando as tags html, css e js. nao foi facil mais desistir nunca.
 os fundamentos de criar novos projetos, e a procura de novas oportudidades.
 <br>
 <br>
-orçamento pedreiro 
-orcamentopedreiro.netlify.app
+
 
 
